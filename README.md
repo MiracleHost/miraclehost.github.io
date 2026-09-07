@@ -6,12 +6,21 @@
 
 ```
 .
-├── index.html            # 页面骨架
-├── posts.json            # 全部内容（站点信息 + 文章）
+├── index.html            # 博客首页
+├── posts.json            # 文章内容（站点信息 + 文章）
+├── downloads.json        # 下载页数据（软件包列表）
+├── download
+│   ├── index.html        # 下载页（对应 /download 路径）
+│   └── files/            # 放安装包：APK / DMG / ZIP
 └── assets
-    ├── css/style.css     # 样式
-    └── js/app.js         # 加载 / 渲染 / 路由 / 搜索
+    ├── css/style.css     # 两个页面共用的样式
+    └── js
+        ├── theme.js      # 亮/暗主题（共用）
+        ├── app.js        # 博客：加载 / 渲染 / 路由 / 搜索
+        └── download.js   # 下载页：列表 / 筛选 / 下载按钮
 ```
+
+访问路径：博客 `https://xxx.github.io/`，下载页 `https://xxx.github.io/download/`。
 
 ## 本地预览
 
@@ -55,6 +64,26 @@ npx serve .
 ## 修改站点信息
 
 `posts.json` 里的 `site` 对象控制头像、昵称、简介、社交链接等，改完刷新即生效。
+
+## 下载页（/download）
+
+数据来自根目录的 `downloads.json`，字段说明：
+
+| 字段 | 说明 |
+| --- | --- |
+| `id` | 唯一标识 |
+| `name` / `icon` | 软件名称与列表图标（emoji） |
+| `platform` | 平台，自动生成筛选按钮（Android / Windows / macOS…） |
+| `channel` | 稳定版 / 测试版等可选标签 |
+| `description` | 一句话说明 |
+| `currentVersion` | 当前版本，与 `latestVersion` 不同时显示「有新版本」 |
+| `latestVersion` | 最新版本 |
+| `size` / `updatedAt` | 安装包体积、更新日期 |
+| `changelog` | 更新说明 |
+| `available` | `false` 时下载按钮显示为「待上传」 |
+| `file` | 安装包路径，放 `download/files/` 下，如 `files/xxx.apk` |
+
+放入 APK 后，把对应条目的 `available` 改成 `true`、填好 `file` / `size` / 版本，按钮即可直接下载。
 
 ## 其他
 

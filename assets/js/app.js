@@ -97,25 +97,6 @@
     return String(src || '').split(/\n{2,}/).map(block).join('\n');
   }
 
-  /* ---------------- 主题 ---------------- */
-
-  function initTheme() {
-    var saved = null;
-    try { saved = localStorage.getItem('blog-theme'); } catch (e) { /* ignore */ }
-    var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    applyTheme(theme);
-    $('#themeToggle').addEventListener('click', function () {
-      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      try { localStorage.setItem('blog-theme', next); } catch (e) { /* ignore */ }
-    });
-  }
-
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    $('#themeIcon').textContent = theme === 'dark' ? '☀️' : '🌙';
-  }
-
   /* ---------------- 网站信息 ---------------- */
 
   function applySite() {
@@ -380,7 +361,7 @@
       });
   }
 
-  initTheme();
+  if (window.BlogTheme) window.BlogTheme.init();
   bindEvents();
   bindScroll();
   load();

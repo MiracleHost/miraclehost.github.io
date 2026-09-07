@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>下载 · 小鹿的代码日记</title>
+  <meta name="description" content="小鹿的软件包下载列表：Android、Windows、macOS 安装包。" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦌</text></svg>" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="../">
+        <span class="nav__avatar">🦌</span>
+        <span class="nav__name">小鹿的代码日记</span>
+      </a>
+      <nav class="nav__links">
+        <a href="../">文章</a>
+        <a href="./" aria-current="page" class="is-current">下载</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="view">
+      <div class="hero hero--slim">
+        <div class="hero__blobs" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="hero__content">
+          <span class="hero__badge">📦 软件包下载</span>
+          <h1 class="hero__title" id="pageTitle">下载</h1>
+          <p class="hero__bio" id="pageSubtitle"></p>
+          <p class="hero__note" id="pageNote"></p>
+          <div class="hero__stats" id="pageStats"></div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <span class="search__icon">🔍</span>
+          <input id="searchInput" type="search" placeholder="搜索软件名称或说明…" autocomplete="off" />
+        </div>
+        <div class="chips" id="platformChips"></div>
+      </div>
+
+      <div class="pkg-list" id="pkgList"></div>
+      <div class="empty" id="emptyState" hidden>没有找到匹配的软件包 🌿</div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>所有安装包均为官方原包，未做任何修改 ☕️</p>
+    <p class="footer__copy" id="footerCopy"></p>
+  </footer>
+
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/download.js"></script>
+</body>
+</html>
