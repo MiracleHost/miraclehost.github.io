@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>加载中…</title>
+  <meta name="description" content="一个记录生活、旅行与思考的个人博客。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="个人博客" />
+  <meta property="og:description" content="一个记录生活、旅行与思考的个人博客。" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦌</text></svg>" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="reading-progress"><span id="progressBar"></span></div>
+
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="#/" data-home>
+        <span class="nav__avatar" id="navAvatar">🦌</span>
+        <span class="nav__name" id="navName">Blog</span>
+      </a>
+      <nav class="nav__links">
+        <a href="#/" data-home>文章</a>
+        <a href="#/" data-home>关于</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ 首页 ============ -->
+    <section id="viewHome" class="view">
+      <div class="hero">
+        <div class="hero__blobs" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="hero__content">
+          <span class="hero__badge" id="heroBadge">✨ 正在更新</span>
+          <div class="hero__avatar" id="heroAvatar">🦌</div>
+          <h1 class="hero__title" id="heroName">个人博客</h1>
+          <p class="hero__tagline" id="heroTagline"></p>
+          <p class="hero__bio" id="heroBio"></p>
+          <div class="hero__meta">
+            <span id="heroLocation"></span>
+            <span class="dot">·</span>
+            <span id="heroHandle"></span>
+          </div>
+          <div class="hero__socials" id="heroSocials"></div>
+          <div class="hero__stats" id="heroStats"></div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <span class="search__icon">🔍</span>
+          <input id="searchInput" type="search" placeholder="搜索标题、摘要或标签…" autocomplete="off" />
+        </div>
+        <div class="chips" id="tagChips"></div>
+      </div>
+
+      <div id="featured"></div>
+      <div class="grid" id="postGrid"></div>
+      <div class="empty" id="emptyState" hidden>没有找到匹配的文章，换个关键词试试 🌿</div>
+    </section>
+
+    <!-- ============ 文章详情 ============ -->
+    <article id="viewPost" class="view post" hidden>
+      <a class="back-link" href="#/" data-home>← 返回全部文章</a>
+      <div class="post__cover" id="postCover"><span id="postEmoji"></span></div>
+      <header class="post__head">
+        <div class="post__tags" id="postTags"></div>
+        <h1 class="post__title" id="postTitle"></h1>
+        <div class="post__meta" id="postMeta"></div>
+      </header>
+      <div class="post__body markdown" id="postContent"></div>
+      <footer class="post__foot">
+        <div class="post__tags" id="postTagsBottom"></div>
+        <div class="post__nav" id="postNav"></div>
+      </footer>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p id="footerText">代码要写，生活也要过 ☕️</p>
+    <p class="footer__copy" id="footerCopy"></p>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
