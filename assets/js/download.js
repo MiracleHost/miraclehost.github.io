@@ -16,8 +16,15 @@
     return p.currentVersion && p.latestVersion && p.currentVersion !== p.latestVersion;
   }
 
+  function isPlanned(p) {
+    return p.available === false;
+  }
+
   function actionHTML(p) {
-    if (!p.available || !p.file) {
+    if (isPlanned(p)) {
+      return '<span class="btn btn--disabled" title="开发进行中，敬请期待">敬请期待</span>';
+    }
+    if (!p.file) {
       return '<span class="btn btn--disabled" title="文件尚未上传">待上传</span>';
     }
     return '<a class="btn" href="' + esc(p.file) + '" download="' + esc(p.file.split('/').pop()) +
@@ -25,6 +32,9 @@
   }
 
   function versionHTML(p) {
+    if (isPlanned(p)) {
+      return '';
+    }
     if (!isOutdated(p)) {
       return '<div class="pkg__ver"><div class="pkg__ver-item"><small>当前 / 最新版本</small><b>' +
         esc(p.latestVersion || p.currentVersion || '—') + '</b></div></div>';
@@ -44,10 +54,11 @@
           '<span class="badge">' + esc(p.platform || '其他') + '</span>' +
           (p.channel ? '<span class="badge badge--ghost">' + esc(p.channel) + '</span>' : '') +
           (isOutdated(p) ? '<span class="badge badge--new">有新版本</span>' : '') +
+          (isPlanned(p) ? '<span class="badge badge--wip">进行中</span>' : '') +
         '</div>' +
         '<p class="pkg__desc">' + esc(p.description) + '</p>' +
         versionHTML(p) +
-        '<div class="pkg__meta"><span>📅 ' + esc(p.updatedAt || '—') + '</span>' +
+        '<div class="pkg__meta"><span>📅 ' + esc(p.updatedAt || '—') + (isPlanned(p) ? ' · 进行中' : '') + '</span>' +
           (p.size ? '<span>💾 ' + esc(p.size) + '</span>' : '') +
           (p.changelog ? '<span>🛠 ' + esc(p.changelog) + '</span>' : '') +
         '</div>' +

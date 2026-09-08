@@ -188,6 +188,13 @@ body.download-page {
   box-shadow: 0 14px 34px rgba(74, 59, 66, .12);
 }
 
+/* “进行中（开发中）”角标（badge 基础样式来自 main.css） */
+.download-page .pkg .badge--wip {
+  color: #7a4f00;
+  background: #ffefbf;
+  border: 1px solid rgba(224, 158, 10, .28);
+}
+
 /* 卡片入场动画（列表由 download.js 动态填充） */
 @keyframes dlRise {
   from {
