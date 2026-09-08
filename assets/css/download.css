@@ -1,0 +1,295 @@
+/* ============================================================
+   下载独立页 download/index.html
+   无左侧导航 · 内容居中 · 移动端适配
+   说明：复用 main.css 中的配色变量（粉紫主题）与 .pkg 卡片样式
+   ============================================================ */
+
+/* —— 独立页基础（本页不再引入 Bootstrap，补齐最小重置） —— */
+body.download-page {
+  margin: 0;
+  background-color: var(--background-color);
+}
+
+.download-page *,
+.download-page *::before,
+.download-page *::after {
+  box-sizing: border-box;
+}
+
+.download-page .dl-shell {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.download-page .dl-wrap {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+/* 兼容 download.js 生成的加载/错误占位文本（原依赖 Bootstrap 工具类） */
+.download-page .text-center {
+  text-align: center;
+}
+
+.download-page .text-muted {
+  color: color-mix(in srgb, var(--default-color), transparent 42%);
+}
+
+.download-page .py-5 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* ============================================================
+   顶部 Hero（深紫 + 玫红光晕）
+   ============================================================ */
+.dl-hero {
+  position: relative;
+  padding: 26px 0 80px;
+  text-align: center;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 300px at 12% -60px, rgba(248, 34, 73, .32), transparent 72%),
+    radial-gradient(70% 280px at 92% 115%, rgba(205, 169, 194, .3), transparent 72%),
+    linear-gradient(165deg, #221423 0%, #2a1a2e 46%, #3d2440 100%);
+}
+
+.dl-hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  text-align: left;
+}
+
+.dl-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--heading-font);
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.dl-brand:hover {
+  color: #fff;
+  opacity: .9;
+}
+
+.dl-brand__mark {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #f82249, #ff5f7e);
+  box-shadow: 0 6px 16px rgba(248, 34, 73, .35);
+}
+
+.dl-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .07);
+  color: #f7edf2;
+  font-size: 13.5px;
+  white-space: nowrap;
+  transition: .25s;
+}
+
+.dl-back:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, .4);
+  background: rgba(255, 255, 255, .14);
+}
+
+.dl-back .dl-back__arrow {
+  transition: transform .25s;
+}
+
+.dl-back:hover .dl-back__arrow {
+  transform: translateX(-3px);
+}
+
+.dl-hero__body {
+  margin-top: 42px;
+}
+
+.dl-kicker {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #ffd7e0;
+  background: rgba(248, 34, 73, .16);
+  border: 1px solid rgba(248, 34, 73, .45);
+}
+
+.dl-hero h1 {
+  margin: 18px auto 12px;
+  color: #fff;
+  font-size: clamp(27px, 4.4vw, 40px);
+  font-weight: 700;
+}
+
+.dl-hero__lead {
+  margin: 0 auto;
+  max-width: 620px;
+  color: #f0e2ea;
+  font-size: clamp(14px, 2vw, 16.5px);
+  line-height: 1.8;
+}
+
+.dl-hero__lead:empty {
+  display: none;
+}
+
+/* ============================================================
+   主体（居中卡片列表）
+   ============================================================ */
+.dl-main {
+  position: relative;
+  padding: 52px 0 84px;
+  background:
+    radial-gradient(620px 200px at 50% 0%, rgba(248, 34, 73, .055), transparent 78%),
+    var(--background-color);
+}
+
+.dl-note {
+  margin: 0 auto 32px;
+  max-width: 680px;
+  text-align: center;
+  font-size: 13.5px;
+  color: color-mix(in srgb, var(--default-color), transparent 38%);
+  line-height: 1.8;
+}
+
+.dl-note:empty {
+  display: none;
+}
+
+.dl-main .pkg {
+  box-shadow: 0 4px 18px rgba(74, 59, 66, .06);
+}
+
+.dl-main .pkg:hover {
+  box-shadow: 0 14px 34px rgba(74, 59, 66, .12);
+}
+
+/* 卡片入场动画（列表由 download.js 动态填充） */
+@keyframes dlRise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dl-main .pkg-list .pkg {
+  animation: dlRise .5s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+.dl-main .pkg-list .pkg:nth-child(1) { animation-delay: .04s; }
+.dl-main .pkg-list .pkg:nth-child(2) { animation-delay: .09s; }
+.dl-main .pkg-list .pkg:nth-child(3) { animation-delay: .14s; }
+.dl-main .pkg-list .pkg:nth-child(4) { animation-delay: .19s; }
+.dl-main .pkg-list .pkg:nth-child(5) { animation-delay: .24s; }
+.dl-main .pkg-list .pkg:nth-child(n+6) { animation-delay: .28s; }
+
+/* ============================================================
+   页脚
+   ============================================================ */
+.dl-footer {
+  padding: 36px 0 46px;
+  text-align: center;
+  font-size: 14px;
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+  background: #fff;
+}
+
+.dl-footer p {
+  margin: 0;
+}
+
+.dl-footer .dl-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--accent-color);
+}
+
+.dl-footer .dl-footer__link:hover {
+  color: color-mix(in srgb, var(--accent-color), transparent 25%);
+}
+
+/* ============================================================
+   移动端适配
+   ============================================================ */
+@media (max-width: 767px) {
+  .download-page .dl-shell {
+    padding: 0 16px;
+  }
+
+  .dl-hero {
+    padding: 18px 0 58px;
+  }
+
+  .dl-hero__body {
+    margin-top: 30px;
+  }
+
+  .dl-main {
+    padding: 34px 0 58px;
+  }
+
+  .dl-note {
+    margin-bottom: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  .dl-hero__top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .dl-brand {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dl-main .pkg {
+    padding: 18px 16px;
+    gap: 14px 12px;
+  }
+
+  .dl-main .pkg__icon {
+    width: 46px;
+    height: 46px;
+    font-size: 21px;
+    border-radius: 8px;
+  }
+
+  .dl-main .pkg__title h3 {
+    font-size: 17px;
+  }
+}
