@@ -1,6 +1,0 @@
-把 APK / DMG / ZIP 等安装包放在这个目录，
-然后在根目录 downloads.json 里把对应的条目改成：
-  "available": true,
-  "file": "files/你的文件名.apk",
-  "size": "实际大小",
-  "currentVersion": "与文件名一致的版本号"

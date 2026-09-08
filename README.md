@@ -1,98 +1,72 @@
-# 个人博客 · 静态站点
+# 小鹿 Lu · 个人博客（iPortfolio 复刻版）
 
-一个零依赖、零构建的静态博客：所有文章存放在 `posts.json`，页面用原生 JavaScript 动态加载并渲染，可直接部署到 GitHub Pages。
+程序媛小鹿的单页博客，视觉与结构复刻 [iPortfolio](https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/) 模板，
+内容本地化为中文；所有外部依赖均使用公共 CDN（jsDelivr / Google Fonts），无构建、无 npm。
 
 ## 目录结构
 
 ```
 .
-├── index.html            # 博客首页
-├── posts.json            # 文章内容（站点信息 + 文章）
-├── downloads.json        # 下载页数据（软件包列表）
+├── index.html            # 单页博客（Hero / 关于 / 技能 / 经历 / 文章 / 服务 / 评价 / 联系）
+├── posts.json            # 博客文章数据（驱动「博客文章」区块）
 ├── download
-│   ├── index.html        # 下载页（对应 /download 路径）
-│   └── files/            # 放安装包：APK / DMG / ZIP
+│   ├── index.html        # 下载页（/download）
+│   └── files/            # 安装包，如 printer-connection-1.3.5.apk
+├── downloads.json        # 下载列表数据
 └── assets
-    ├── css/style.css     # 两个页面共用的样式
+    ├── css/main.css      # iPortfolio 风格样式
     └── js
-        ├── theme.js      # 亮/暗主题（共用）
-        ├── app.js        # 博客：加载 / 渲染 / 路由 / 搜索
-        └── download.js   # 下载页：列表 / 筛选 / 下载按钮
+        ├── main.js       # 侧边栏 / AOS / 打字机 / Swiper / 文章加载
+        └── download.js   # 下载列表渲染
 ```
-
-访问路径：博客 `https://xxx.github.io/`，下载页 `https://xxx.github.io/download/`。
 
 ## 本地预览
 
-因为要用 `fetch()` 读取 JSON，必须通过 http 访问（直接双击 `index.html` 会被浏览器拦截）：
+必须通过 http 访问（页面用 `fetch()` 读取 JSON，直接双击打开会被浏览器拦截）：
 
 ```bash
-# 任选一种
 python -m http.server 8080
+# 或
 npx serve .
 ```
 
-然后打开 http://localhost:8080
+打开 http://localhost:8080 ，下载页 http://localhost:8080/download/
 
-## 发布到 GitHub Pages
+## 公共 CDN 依赖
 
-1. 新建仓库（例如 `blog`），把代码推到 `main` 分支
-2. 仓库 **Settings → Pages → Build and deployment**
-3. Source 选择 `Deploy from a branch`，分支选 `main` / 根目录 `/ (root)`
-4. 保存后稍等 1 分钟，访问 `https://<用户名>.github.io/<仓库名>/`
-
-之后每次改动 `posts.json` 并 push，线上内容会自动更新，无需重新构建。
+| 资源 | CDN |
+| --- | --- |
+| Bootstrap 5.3.3 (CSS/JS) | `cdn.jsdelivr.net/npm/bootstrap@5.3.3` |
+| Bootstrap Icons 1.11.3 | `cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3` |
+| AOS 2.3.4 | `cdn.jsdelivr.net/npm/aos@2.3.4` |
+| Swiper 11 | `cdn.jsdelivr.net/npm/swiper@11.1.14` |
+| Typed.js 2.1.0 | `cdn.jsdelivr.net/npm/typed.js@2.1.0` |
+| PureCounter 1.5.0 | `cdn.jsdelivr.net/npm/@srexi/purecounterjs@1.5.0` |
+| Google Fonts | Roboto / Poppins / Raleway |
+| 头像 | `api.dicebear.com` |
+| 配图 | `picsum.photos`（可替换为自己的图片） |
 
 ## 写新文章
 
-在 `posts.json` 的 `posts` 数组里新增一条即可，字段说明：
-
-| 字段 | 必填 | 说明 |
-| --- | --- | --- |
-| `id` | ✅ | 唯一标识，用于 URL（建议英文短横线） |
-| `title` | ✅ | 标题 |
-| `excerpt` | ✅ | 列表页摘要 |
-| `date` | ✅ | `YYYY-MM-DD`，用于排序 |
-| `tags` | | 标签数组，自动生成筛选按钮 |
-| `emoji` | | 封面上的大字 emoji |
-| `cover` | | 封面 CSS 渐变，省略时自动分配 |
-| `pinned` | | `true` 时置顶，且会显示在大图上 |
-| `content` | ✅ | 正文，支持简易 Markdown |
-
-`content` 支持的语法：`#`~`###` 标题、`**粗体**`、`*斜体*`、`` `代码` ``、``` 代码块、列表、引用 `>`、链接、图片、分割线 `---`。
-
-## 修改站点信息
-
-`posts.json` 里的 `site` 对象控制头像、昵称、简介、社交链接等，改完刷新即生效。
-
-## 下载页（/download）
-
-数据来自根目录的 `downloads.json`，字段说明：
+在 `posts.json` 的 `posts` 数组里加一条，刷新页面即出现在「博客文章」区块，
+标签会自动生成筛选按钮，点击卡片弹出全文（正文支持简易 Markdown）。
 
 | 字段 | 说明 |
 | --- | --- |
-| `id` | 唯一标识 |
-| `name` / `icon` | 软件名称与列表图标（emoji） |
-| `platform` | 平台，自动生成筛选按钮（Android / Windows / macOS…） |
-| `channel` | 稳定版 / 测试版等可选标签 |
-| `description` | 一句话说明 |
-| `currentVersion` | 当前版本，与 `latestVersion` 不同时显示「有新版本」 |
-| `latestVersion` | 最新版本 |
-| `size` / `updatedAt` | 安装包体积、更新日期 |
-| `changelog` | 更新说明 |
-| `available` | `false` 时下载按钮显示为「待上传」 |
-| `file` | 安装包路径，放 `download/files/` 下，如 `files/xxx.apk` |
+| `id` | 唯一标识，同时用于生成封面随机图 |
+| `title` / `excerpt` | 标题与摘要 |
+| `date` | `YYYY-MM-DD`，用于排序 |
+| `tags` | 标签数组（第一个标签作为筛选归类） |
+| `pinned` | `true` 置顶 |
+| `content` | 正文，支持标题、粗斜体、代码、列表、引用、链接、图片 |
 
-放入 APK 后，把对应条目的 `available` 改成 `true`、填好 `file` / `size` / 版本，按钮即可直接下载。
+## 添加下载包
 
-## 界面风格
+把安装包放进 `download/files/`，然后在 `downloads.json` 增加条目：
+`name / icon / platform / channel / description / currentVersion / latestVersion / size / updatedAt / changelog / available / file`。
+`available` 为 `true` 且 `file` 存在时，按钮变为可点击下载。
 
-参考 iPortfolio（BootstrapMade）的视觉：左侧 300px 深色固定侧边栏（头像 / 昵称 / 社交图标 / 菜单）、全屏深色 Hero 带打字机副标题、`#149ddd` 蓝色强调色、章节标题带 50px 下划线、右下角回到顶部按钮。`< 1200px` 时侧边栏收起，右上角菜单按钮唤出。
+## 发布到 GitHub Pages
 
-改配色只需调整 `assets/css/style.css` 顶部的 CSS 变量（重点是 `--accent` 与 `--dark-bg`）。
-
-## 其他
-
-- 支持亮色 / 暗色主题切换（跟随系统，也可手动切换并记忆）
-- 支持标签筛选、关键词搜索、阅读进度条、上下篇导航
-- 所有样式和脚本均为原生实现，无第三方依赖（仅引用 Google Fonts 的 Roboto / Poppins / Raleway，可删）
+推送到 GitHub 仓库 → Settings → Pages → `Deploy from a branch` → `main` / `/(root)`，
+稍等一分钟访问 `https://<用户名>.github.io/<仓库名>/`。改动 JSON 后 push 即生效。

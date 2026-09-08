@@ -1,163 +1,76 @@
 /**
- * 下载页：从 ../downloads.json 读取软件包列表并渲染。
+ * 下载页：读取 ../downloads.json 渲染软件包列表。
  */
 (function () {
   'use strict';
 
   var $ = function (sel) { return document.querySelector(sel); };
-  var state = { page: {}, packages: [], platform: '全部', keyword: '' };
 
   function esc(str) {
     return String(str == null ? '' : str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  function socialHTML(socials) {
-    return (socials || []).map(function (s) {
-      return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener" title="' +
-        esc(s.label) + '">' + esc(s.icon || '🔗') + '</a>';
-    }).join('');
+  function isOutdated(p) {
+    return p.currentVersion && p.latestVersion && p.currentVersion !== p.latestVersion;
   }
 
-  function applySite(site) {
-    var name = site.name || '小鹿的代码日记';
-    $('#sideName').textContent = name;
-    $('#sideHandle').textContent = site.handle || '';
-    $('#sideAvatar').textContent = site.avatar || '🦌';
-    $('#sideSocials').innerHTML = socialHTML(site.socials);
-    $('#sideCopy').textContent = '© ' + new Date().getFullYear() + ' ' + name;
-  }
-
-  function platforms() {
-    var seen = {};
-    state.packages.forEach(function (p) { seen[p.platform || '其他'] = true; });
-    return Object.keys(seen);
-  }
-
-  function isOutdated(pkg) {
-    return pkg.currentVersion && pkg.latestVersion && pkg.currentVersion !== pkg.latestVersion;
-  }
-
-  function renderChips() {
-    var list = ['全部'].concat(platforms());
-    $('#platformChips').innerHTML = list.map(function (t) {
-      return '<button class="chip' + (t === state.platform ? ' is-active' : '') +
-        '" data-platform="' + esc(t) + '">' + esc(t) + '</button>';
-    }).join('');
-  }
-
-  function filtered() {
-    var kw = state.keyword.trim().toLowerCase();
-    return state.packages.filter(function (p) {
-      if (state.platform !== '全部' && (p.platform || '其他') !== state.platform) return false;
-      if (!kw) return true;
-      return [p.name, p.description, p.platform, p.changelog].join(' ').toLowerCase().indexOf(kw) > -1;
-    });
-  }
-
-  function actionHTML(pkg) {
-    if (!pkg.available || !pkg.file) {
+  function actionHTML(p) {
+    if (!p.available || !p.file) {
       return '<span class="btn btn--disabled" title="文件尚未上传">待上传</span>';
     }
-    return '<a class="btn" href="' + esc(pkg.file) + '" download="' +
-      esc(pkg.file.split('/').pop()) + '"><span>⬇</span>下载</a>';
+    return '<a class="btn" href="' + esc(p.file) + '" download="' + esc(p.file.split('/').pop()) +
+      '"><span>⬇</span>下载</a>';
   }
 
-  function versionHTML(pkg) {
-    if (!isOutdated(pkg)) {
-      return '<div class="pkg__ver"><div class="pkg__ver-item">' +
-        '<small>当前 / 最新版本</small><b>' + esc(pkg.latestVersion || pkg.currentVersion || '—') +
-        '</b></div></div>';
+  function versionHTML(p) {
+    if (!isOutdated(p)) {
+      return '<div class="pkg__ver"><div class="pkg__ver-item"><small>当前 / 最新版本</small><b>' +
+        esc(p.latestVersion || p.currentVersion || '—') + '</b></div></div>';
     }
     return '<div class="pkg__ver">' +
-      '<div class="pkg__ver-item"><small>当前版本</small><b>' + esc(pkg.currentVersion) + '</b></div>' +
-      '<span class="pkg__arrow">→</span>' +
-      '<div class="pkg__ver-item"><small>最新版本</small><b class="is-new">' + esc(pkg.latestVersion) + '</b></div>' +
+      '<div class="pkg__ver-item"><small>当前版本</small><b>' + esc(p.currentVersion) + '</b></div>' +
+      '<span class="text-muted">→</span>' +
+      '<div class="pkg__ver-item"><small>最新版本</small><b class="is-new">' + esc(p.latestVersion) + '</b></div>' +
       '</div>';
   }
 
-  function pkgHTML(pkg) {
+  function pkgHTML(p) {
     return '<article class="pkg">' +
-      '<div class="pkg__icon">' + esc(pkg.icon || '📦') + '</div>' +
+      '<div class="pkg__icon">' + esc(p.icon || '📦') + '</div>' +
       '<div class="pkg__main">' +
-        '<div class="pkg__title">' +
-          '<h3>' + esc(pkg.name) + '</h3>' +
-          '<span class="badge">' + esc(pkg.platform || '其他') + '</span>' +
-          (pkg.channel ? '<span class="badge badge--ghost">' + esc(pkg.channel) + '</span>' : '') +
-          (isOutdated(pkg) ? '<span class="badge badge--new">有新版本</span>' : '') +
+        '<div class="pkg__title"><h3>' + esc(p.name) + '</h3>' +
+          '<span class="badge">' + esc(p.platform || '其他') + '</span>' +
+          (p.channel ? '<span class="badge badge--ghost">' + esc(p.channel) + '</span>' : '') +
+          (isOutdated(p) ? '<span class="badge badge--new">有新版本</span>' : '') +
         '</div>' +
-        '<p class="pkg__desc">' + esc(pkg.description) + '</p>' +
-        versionHTML(pkg) +
-        '<div class="pkg__meta">' +
-          '<span>📅 ' + esc(pkg.updatedAt || '—') + '</span>' +
-          (pkg.size ? '<span>💾 ' + esc(pkg.size) + '</span>' : '') +
-          (pkg.changelog ? '<span class="pkg__changelog">🛠 ' + esc(pkg.changelog) + '</span>' : '') +
+        '<p class="pkg__desc">' + esc(p.description) + '</p>' +
+        versionHTML(p) +
+        '<div class="pkg__meta"><span>📅 ' + esc(p.updatedAt || '—') + '</span>' +
+          (p.size ? '<span>💾 ' + esc(p.size) + '</span>' : '') +
+          (p.changelog ? '<span>🛠 ' + esc(p.changelog) + '</span>' : '') +
         '</div>' +
       '</div>' +
-      '<div class="pkg__action">' + actionHTML(pkg) + '</div>' +
+      '<div class="pkg__action">' + actionHTML(p) + '</div>' +
     '</article>';
   }
 
-  function render() {
-    var list = filtered();
-    $('#emptyState').hidden = list.length > 0;
-    $('#pkgList').innerHTML = list.map(pkgHTML).join('');
-  }
-
-  function applyPage() {
-    var page = state.page || {};
-    document.title = (page.title || '下载') + ' · 小鹿的代码日记';
-    $('#pageTitle').textContent = page.title || '下载';
-    $('#pageSubtitle').textContent = page.subtitle || '';
-    $('#pageNote').textContent = page.note || '';
-    $('#footerCopy').textContent = '© ' + new Date().getFullYear() + ' 小鹿的代码日记';
-  }
-
-  function bind() {
-    $('#searchInput').addEventListener('input', function (e) {
-      state.keyword = e.target.value;
-      render();
+  fetch('../downloads.json', { cache: 'no-store' })
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function (data) {
+      var page = data.page || {};
+      document.title = (page.title || '下载') + ' · 小鹿 Lu';
+      $('#pageTitle').textContent = page.title || 'APP Download';
+      $('#pageSubtitle').textContent = page.subtitle || '';
+      $('#pageNote').textContent = page.note || '';
+      $('#pkgList').innerHTML = (data.packages || []).map(pkgHTML).join('');
+    })
+    .catch(function () {
+      $('#pkgList').innerHTML =
+        '<div class="text-center text-muted py-5">列表加载失败：请通过 http(s) 打开本页。</div>';
     });
-
-    $('#platformChips').addEventListener('click', function (e) {
-      var btn = e.target.closest('.chip');
-      if (!btn) return;
-      state.platform = btn.getAttribute('data-platform');
-      renderChips();
-      render();
-    });
-  }
-
-  function load() {
-    fetch('../downloads.json', { cache: 'no-store' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      })
-      .then(function (data) {
-        state.page = data.page || {};
-        state.packages = data.packages || [];
-        applyPage();
-        renderChips();
-        render();
-      })
-      .catch(function () {
-        $('#pkgList').innerHTML =
-          '<div class="empty">列表加载失败，请确认 <code>downloads.json</code> 存在，并通过 http(s) 访问本页。</div>';
-      });
-
-    fetch('../posts.json', { cache: 'no-store' })
-      .then(function (res) { return res.ok ? res.json() : null; })
-      .then(function (data) { if (data) applySite(data.site || {}); })
-      .catch(function () { /* 站点信息可选 */ });
-  }
-
-  if (window.BlogTheme) window.BlogTheme.init();
-  if (window.BlogSite) window.BlogSite.init();
-  bind();
-  load();
 })();
