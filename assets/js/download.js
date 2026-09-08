@@ -16,6 +16,22 @@
       .replace(/'/g, '&#39;');
   }
 
+  function socialHTML(socials) {
+    return (socials || []).map(function (s) {
+      return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener" title="' +
+        esc(s.label) + '">' + esc(s.icon || '🔗') + '</a>';
+    }).join('');
+  }
+
+  function applySite(site) {
+    var name = site.name || '小鹿的代码日记';
+    $('#sideName').textContent = name;
+    $('#sideHandle').textContent = site.handle || '';
+    $('#sideAvatar').textContent = site.avatar || '🦌';
+    $('#sideSocials').innerHTML = socialHTML(site.socials);
+    $('#sideCopy').textContent = '© ' + new Date().getFullYear() + ' ' + name;
+  }
+
   function platforms() {
     var seen = {};
     state.packages.forEach(function (p) { seen[p.platform || '其他'] = true; });
@@ -24,11 +40,6 @@
 
   function isOutdated(pkg) {
     return pkg.currentVersion && pkg.latestVersion && pkg.currentVersion !== pkg.latestVersion;
-  }
-
-  function fileUrl(file) {
-    if (!file) return '';
-    return /^https?:\/\//.test(file) ? file : file;
   }
 
   function renderChips() {
@@ -42,8 +53,7 @@
   function filtered() {
     var kw = state.keyword.trim().toLowerCase();
     return state.packages.filter(function (p) {
-      var okPlatform = state.platform === '全部' || (p.platform || '其他') === state.platform;
-      if (!okPlatform) return false;
+      if (state.platform !== '全部' && (p.platform || '其他') !== state.platform) return false;
       if (!kw) return true;
       return [p.name, p.description, p.platform, p.changelog].join(' ').toLowerCase().indexOf(kw) > -1;
     });
@@ -53,16 +63,15 @@
     if (!pkg.available || !pkg.file) {
       return '<span class="btn btn--disabled" title="文件尚未上传">待上传</span>';
     }
-    return '<a class="btn" href="' + esc(fileUrl(pkg.file)) + '" download="' +
+    return '<a class="btn" href="' + esc(pkg.file) + '" download="' +
       esc(pkg.file.split('/').pop()) + '"><span>⬇</span>下载</a>';
   }
 
   function versionHTML(pkg) {
-    var outdated = isOutdated(pkg);
-    if (!pkg.latestVersion || !outdated) {
-      return '<div class="pkg__ver">' +
-        '<div class="pkg__ver-item"><small>当前 / 最新版本</small><b>' + esc(pkg.latestVersion || pkg.currentVersion || '—') + '</b></div>' +
-        '</div>';
+    if (!isOutdated(pkg)) {
+      return '<div class="pkg__ver"><div class="pkg__ver-item">' +
+        '<small>当前 / 最新版本</small><b>' + esc(pkg.latestVersion || pkg.currentVersion || '—') +
+        '</b></div></div>';
     }
     return '<div class="pkg__ver">' +
       '<div class="pkg__ver-item"><small>当前版本</small><b>' + esc(pkg.currentVersion) + '</b></div>' +
@@ -76,7 +85,7 @@
       '<div class="pkg__icon">' + esc(pkg.icon || '📦') + '</div>' +
       '<div class="pkg__main">' +
         '<div class="pkg__title">' +
-          '<h2>' + esc(pkg.name) + '</h2>' +
+          '<h3>' + esc(pkg.name) + '</h3>' +
           '<span class="badge">' + esc(pkg.platform || '其他') + '</span>' +
           (pkg.channel ? '<span class="badge badge--ghost">' + esc(pkg.channel) + '</span>' : '') +
           (isOutdated(pkg) ? '<span class="badge badge--new">有新版本</span>' : '') +
@@ -105,19 +114,7 @@
     $('#pageTitle').textContent = page.title || '下载';
     $('#pageSubtitle').textContent = page.subtitle || '';
     $('#pageNote').textContent = page.note || '';
-
-    var outdated = state.packages.filter(isOutdated).length;
-    $('#pageStats').innerHTML = [
-      statHTML(state.packages.length, 'PACKAGES'),
-      statHTML(platforms().length, 'PLATFORMS'),
-      statHTML(outdated, 'NEED UPDATE')
-    ].join('');
-
     $('#footerCopy').textContent = '© ' + new Date().getFullYear() + ' 小鹿的代码日记';
-  }
-
-  function statHTML(value, label) {
-    return '<div class="stat"><b>' + esc(value) + '</b><span>' + esc(label) + '</span></div>';
   }
 
   function bind() {
@@ -133,10 +130,6 @@
       renderChips();
       render();
     });
-
-    window.addEventListener('scroll', function () {
-      $('#nav').classList.toggle('is-stuck', window.scrollY > 10);
-    }, { passive: true });
   }
 
   function load() {
@@ -154,11 +147,17 @@
       })
       .catch(function () {
         $('#pkgList').innerHTML =
-          '<div class="empty">列表加载失败 🌧<br>请确认 <code>downloads.json</code> 存在，并通过 http(s) 访问本页。</div>';
+          '<div class="empty">列表加载失败，请确认 <code>downloads.json</code> 存在，并通过 http(s) 访问本页。</div>';
       });
+
+    fetch('../posts.json', { cache: 'no-store' })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) { if (data) applySite(data.site || {}); })
+      .catch(function () { /* 站点信息可选 */ });
   }
 
   if (window.BlogTheme) window.BlogTheme.init();
+  if (window.BlogSite) window.BlogSite.init();
   bind();
   load();
 })();

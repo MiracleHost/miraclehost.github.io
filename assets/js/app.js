@@ -1,23 +1,22 @@
 /**
- * 纯静态博客：从 posts.json 读取内容并渲染。
- * 无需构建、无需后端，直接部署到 GitHub Pages 即可。
+ * 博客：从 posts.json 读取内容并渲染（列表 / 详情 / 搜索 / 标签筛选）。
  */
 (function () {
   'use strict';
 
-  var $ = function (sel, root) { return (root || document).querySelector(sel); };
-  var state = { site: {}, posts: [], tag: '全部', keyword: '', current: null };
+  var $ = function (sel) { return document.querySelector(sel); };
+  var state = { site: {}, posts: [], tag: '全部', keyword: '' };
 
   var FALLBACK_COVERS = [
-    'linear-gradient(135deg, #ffd3a5, #fd6585)',
-    'linear-gradient(135deg, #a1c4fd, #c2e9fb)',
+    'linear-gradient(135deg, #149ddd, #0b6ea8)',
     'linear-gradient(135deg, #fbc2eb, #a6c1ee)',
     'linear-gradient(135deg, #d4fc79, #96e6a1)',
     'linear-gradient(135deg, #e0c3fc, #8ec5fc)',
-    'linear-gradient(135deg, #84fab0, #8fd3f4)'
+    'linear-gradient(135deg, #84fab0, #8fd3f4)',
+    'linear-gradient(135deg, #ffd3a5, #fd6585)'
   ];
 
-  /* ---------------- 工具函数 ---------------- */
+  /* ---------------- 工具 ---------------- */
 
   function esc(str) {
     return String(str == null ? '' : str)
@@ -45,7 +44,7 @@
     return minutes + ' 分钟阅读';
   }
 
-  /* ---------------- 极简 Markdown 渲染 ---------------- */
+  /* ---------------- 极简 Markdown ---------------- */
 
   function inline(text) {
     return esc(text)
@@ -73,7 +72,6 @@
     }
 
     var lines = t.split('\n');
-
     if (lines.every(function (l) { return /^>\s?/.test(l.trim()); })) {
       return '<blockquote>' + inline(lines.map(function (l) {
         return l.trim().replace(/^>\s?/, '');
@@ -89,7 +87,6 @@
         return '<li>' + inline(l.trim().replace(/^\d+\.\s+/, '')) + '</li>';
       }).join('') + '</ol>';
     }
-
     return '<p>' + lines.map(inline).join('<br>') + '</p>';
   }
 
@@ -99,44 +96,6 @@
 
   /* ---------------- 网站信息 ---------------- */
 
-  function applySite() {
-    var site = state.site || {};
-    document.title = site.name ? site.name + ' · ' + (site.tagline || '个人博客') : '个人博客';
-    $('#navName').textContent = site.name || '个人博客';
-    $('#navAvatar').textContent = site.avatar || '🌿';
-    $('#heroAvatar').textContent = site.avatar || '🌿';
-    $('#heroName').textContent = site.name || '个人博客';
-    $('#heroTagline').textContent = site.tagline || '';
-    $('#heroBio').textContent = site.bio || '';
-    $('#heroHandle').textContent = site.handle || '';
-    $('#heroLocation').textContent = site.location || '';
-    $('#heroBadge').textContent = '✨ 共 ' + state.posts.length + ' 篇更新';
-
-    var tags = allTags();
-    $('#heroStats').innerHTML = [
-      statHTML(state.posts.length, 'ARTICLES'),
-      statHTML(tags.length, 'TAGS'),
-      statHTML(state.posts.length ? formatDate(state.posts[0].date).replace(/ 年.*/, '') : '—', 'LATEST')
-    ].join('');
-
-    $('#heroSocials').innerHTML = (site.socials || []).map(function (s) {
-      return '<a class="social" href="' + esc(s.url) + '" target="_blank" rel="noopener">' +
-        '<span>' + esc(s.icon || '🔗') + '</span>' + esc(s.label) + '</a>';
-    }).join('');
-
-    $('#footerText').textContent = site.tagline || '用一杯咖啡的时间，写点什么 ☕️';
-    $('#footerCopy').textContent = '© ' + new Date().getFullYear() + ' ' + (site.name || '个人博客');
-
-    var og = document.querySelector('meta[property="og:title"]');
-    if (og) og.setAttribute('content', site.name || '个人博客');
-    var desc = document.querySelector('meta[name="description"]');
-    if (desc && site.bio) desc.setAttribute('content', site.bio);
-  }
-
-  function statHTML(value, label) {
-    return '<div class="stat"><b>' + esc(value) + '</b><span>' + esc(label) + '</span></div>';
-  }
-
   function allTags() {
     var seen = {};
     state.posts.forEach(function (p) {
@@ -145,48 +104,101 @@
     return Object.keys(seen);
   }
 
-  /* ---------------- 列表页 ---------------- */
+  function socialHTML(socials, cls) {
+    return (socials || []).map(function (s) {
+      return '<a class="' + cls + '" href="' + esc(s.url) + '" target="_blank" rel="noopener" title="' +
+        esc(s.label) + '">' + esc(s.icon || '🔗') + '</a>';
+    }).join('');
+  }
+
+  function applySite() {
+    var site = state.site || {};
+    var name = site.name || '个人博客';
+    document.title = name + ' · ' + (site.tagline || '首页');
+
+    $('#sideName').textContent = name;
+    $('#sideHandle').textContent = site.handle || '';
+    $('#sideAvatar').textContent = site.avatar || '🦌';
+    $('#sideSocials').innerHTML = socialHTML(site.socials, '');
+    $('#heroSocials').innerHTML = socialHTML(site.socials, '');
+    $('#heroName').textContent = name;
+    $('#sideCopy').textContent = '© ' + new Date().getFullYear() + ' ' + name;
+
+    $('#aboutTagline').textContent = site.tagline || '';
+    $('#aboutBio').textContent = site.bio || '';
+    $('#aboutRole').textContent = (site.roles && site.roles[0]) || site.tagline || '';
+
+    var mail = (site.socials || []).filter(function (s) { return /^mailto:/.test(s.url || ''); })[0];
+    var info = [
+      ['🏙', '城市', site.location || '—'],
+      ['✉️', '邮箱', mail ? mail.url.replace(/^mailto:/, '') : (site.handle || '—')],
+      ['📝', '文章', state.posts.length + ' 篇'],
+      ['🏷', '标签', allTags().length + ' 个']
+    ];
+    $('#aboutInfo').innerHTML = info.map(function (row) {
+      return '<li><span class="k">' + row[0] + '</span><span><strong>' + esc(row[1]) +
+        '：</strong>' + esc(row[2]) + '</span></li>';
+    }).join('');
+
+    $('#aboutStats').innerHTML = [
+      statHTML(state.posts.length, '📝', 'Articles', '累计文章'),
+      statHTML(allTags().length, '🏷', 'Tags', '文章标签'),
+      statHTML(state.posts.length ? String(state.posts[0].date).slice(0, 4) : '—', '📅', 'Latest', '最近更新')
+    ].join('');
+
+    $('#footerText').textContent = site.tagline || '用一杯咖啡的时间，写点什么 ☕️';
+
+    var og = document.querySelector('meta[property="og:title"]');
+    if (og) og.setAttribute('content', name);
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc && site.bio) desc.setAttribute('content', site.bio);
+
+    startTyped(site.roles || [site.tagline || '写作者']);
+  }
+
+  function statHTML(value, icon, label, sub) {
+    return '<div class="stats-item"><div class="ico">' + icon + '</div>' +
+      '<span class="num">' + esc(value) + '</span>' +
+      '<p><strong>' + esc(label) + '</strong> ' + esc(sub) + '</p></div>';
+  }
+
+  /* ---------------- Hero 打字机 ---------------- */
+
+  function startTyped(items) {
+    var el = $('#typedText');
+    if (!el) return;
+    items = (items || []).filter(Boolean);
+    if (!items.length) return;
+
+    var index = 0, chars = 0, deleting = false;
+    (function tick() {
+      var word = items[index % items.length];
+      el.textContent = word.slice(0, chars);
+      var delay = deleting ? 60 : 110;
+      if (!deleting && chars === word.length) { deleting = true; delay = 1500; }
+      else if (deleting && chars === 0) { deleting = false; index += 1; delay = 300; }
+      else { chars += deleting ? -1 : 1; }
+      setTimeout(tick, delay);
+    })();
+  }
+
+  /* ---------------- 列表 ---------------- */
 
   function renderChips() {
     var tags = ['全部'].concat(allTags());
     $('#tagChips').innerHTML = tags.map(function (t) {
-      return '<button class="chip' + (t === state.tag ? ' is-active' : '') + '" data-tag="' + esc(t) + '">' + esc(t) + '</button>';
+      return '<button class="chip' + (t === state.tag ? ' is-active' : '') +
+        '" data-tag="' + esc(t) + '">' + esc(t) + '</button>';
     }).join('');
   }
 
   function filtered() {
     var kw = state.keyword.trim().toLowerCase();
     return state.posts.filter(function (p) {
-      var okTag = state.tag === '全部' || (p.tags || []).indexOf(state.tag) > -1;
-      if (!okTag) return false;
+      if (state.tag !== '全部' && (p.tags || []).indexOf(state.tag) === -1) return false;
       if (!kw) return true;
-      var hay = [p.title, p.excerpt, (p.tags || []).join(' '), p.content].join(' ').toLowerCase();
-      return hay.indexOf(kw) > -1;
-    });
-  }
-
-  function renderList() {
-    var list = filtered();
-    var isDefault = state.tag === '全部' && !state.keyword.trim();
-    var featuredBox = $('#featured');
-    var gridBox = $('#postGrid');
-
-    $('#emptyState').hidden = list.length > 0;
-
-    if (isDefault && list.length) {
-      var first = list[0];
-      featuredBox.innerHTML = featuredHTML(first);
-      featuredBox.querySelector('.featured').addEventListener('click', function () {
-        openPost(first.id);
-      });
-      list = list.slice(1);
-    } else {
-      featuredBox.innerHTML = '';
-    }
-
-    gridBox.innerHTML = list.map(cardHTML).join('');
-    Array.prototype.forEach.call(gridBox.querySelectorAll('.card'), function (el) {
-      el.addEventListener('click', function () { openPost(el.getAttribute('data-id')); });
+      return [p.title, p.excerpt, (p.tags || []).join(' '), p.content]
+        .join(' ').toLowerCase().indexOf(kw) > -1;
     });
   }
 
@@ -197,14 +209,14 @@
   function featuredHTML(post) {
     return '<div class="featured">' +
       '<div class="featured__cover" style="background:' + coverOf(post, 0) + '">' +
-        '<span class="featured__flag">⭐ 置顶推荐</span>' + esc(post.emoji || '📝') +
+        '<span class="featured__flag">置顶推荐</span>' + esc(post.emoji || '📝') +
       '</div>' +
       '<div class="featured__body">' +
         '<div class="card__tags">' + tagHTML(post.tags) + '</div>' +
-        '<h2>' + esc(post.title) + '</h2>' +
+        '<h3>' + esc(post.title) + '</h3>' +
         '<p>' + esc(post.excerpt) + '</p>' +
-        '<div class="card__meta" style="margin-top:auto;padding-top:24px">' +
-          '<span>' + esc(formatDate(post.date)) + '</span><span>·</span><span>' + esc(readingTime(post)) + '</span>' +
+        '<div class="card__meta" style="margin-top:auto;padding-top:22px">' +
+          esc(formatDate(post.date)) + ' · ' + esc(readingTime(post)) +
         '</div>' +
       '</div>' +
     '</div>';
@@ -218,11 +230,35 @@
       '</div>' +
       '<div class="card__body">' +
         '<div class="card__tags">' + tagHTML(post.tags) + '</div>' +
-        '<h2 class="card__title">' + esc(post.title) + '</h2>' +
+        '<h3 class="card__title">' + esc(post.title) + '</h3>' +
         '<p class="card__excerpt">' + esc(post.excerpt) + '</p>' +
-        '<div class="card__meta"><span>' + esc(formatDate(post.date)) + '</span></div>' +
+        '<div class="card__meta">' + esc(formatDate(post.date)) + '</div>' +
       '</div>' +
     '</article>';
+  }
+
+  function renderList() {
+    var list = filtered();
+    var isDefault = state.tag === '全部' && !state.keyword.trim();
+    var featuredBox = $('#featured');
+    var gridBox = $('#postGrid');
+
+    $('#emptyState').hidden = list.length > 0;
+
+    if (isDefault && list.length) {
+      featuredBox.innerHTML = featuredHTML(list[0]);
+      featuredBox.querySelector('.featured').addEventListener('click', function () {
+        openPost(list[0].id);
+      });
+      list = list.slice(1);
+    } else {
+      featuredBox.innerHTML = '';
+    }
+
+    gridBox.innerHTML = list.map(cardHTML).join('');
+    Array.prototype.forEach.call(gridBox.querySelectorAll('.card'), function (el) {
+      el.addEventListener('click', function () { openPost(el.getAttribute('data-id')); });
+    });
   }
 
   /* ---------------- 文章详情 ---------------- */
@@ -244,11 +280,7 @@
     var post = found.post;
     var index = found.index;
 
-    state.current = post;
     document.title = post.title + ' · ' + (state.site.name || '个人博客');
-
-    $('#postCover').style.background = coverOf(post, index);
-    $('#postEmoji').textContent = post.emoji || '📝';
     $('#postTitle').textContent = post.title;
     $('#postTags').innerHTML = tagHTML(post.tags);
     $('#postTagsBottom').innerHTML = tagHTML(post.tags);
@@ -280,33 +312,29 @@
         return;
       }
     }
-    state.current = null;
     $('#viewPost').hidden = true;
     $('#viewHome').hidden = false;
-    document.title = state.site.name ? state.site.name + ' · ' + (state.site.tagline || '个人博客') : '个人博客';
+    document.title = state.site.name ? state.site.name + ' · ' + (state.site.tagline || '首页') : '个人博客';
     renderList();
+
+    var anchor = location.hash.replace('#', '');
+    if (anchor && anchor.indexOf('/') === -1) {
+      var target = document.getElementById(anchor);
+      if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+    updateProgress();
   }
 
-  /* ---------------- 滚动效果 ---------------- */
+  /* ---------------- 滚动 & 事件 ---------------- */
 
   function updateProgress() {
     var bar = $('#progressBar');
+    if (!bar) return;
     if ($('#viewPost').hidden) { bar.style.width = '0'; return; }
     var el = document.documentElement;
     var height = el.scrollHeight - el.clientHeight;
-    var ratio = height > 0 ? el.scrollTop / height : 0;
-    bar.style.width = Math.min(100, Math.max(0, ratio * 100)) + '%';
+    bar.style.width = (height > 0 ? Math.min(100, (el.scrollTop / height) * 100) : 0) + '%';
   }
-
-  function bindScroll() {
-    var nav = $('#nav');
-    window.addEventListener('scroll', function () {
-      nav.classList.toggle('is-stuck', window.scrollY > 10);
-      updateProgress();
-    }, { passive: true });
-  }
-
-  /* ---------------- 事件绑定 ---------------- */
 
   function bindEvents() {
     $('#searchInput').addEventListener('input', function (e) {
@@ -323,12 +351,14 @@
     });
 
     document.addEventListener('click', function (e) {
-      var link = e.target.closest('[data-home]');
+      var link = e.target.closest('a[href="#blog"], a[href="#hero"], a[href="#about"]');
       if (!link) return;
-      if (location.hash === '#/' || location.hash === '') {
+      var target = link.getAttribute('href').slice(1);
+      if (!location.hash || location.hash === '#' + target) {
         e.preventDefault();
         route();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        var el = document.getElementById(target);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
 
@@ -356,13 +386,12 @@
       })
       .catch(function () {
         $('#postGrid').innerHTML =
-          '<div class="empty">内容加载失败 🌧<br>请确认 <code>posts.json</code> 格式正确，' +
-          '并通过 http(s) 访问（直接双击打开 HTML 会被浏览器拦截本地文件读取）。</div>';
+          '<div class="empty">内容加载失败，请确认 <code>posts.json</code> 正确，并通过 http(s) 访问本页。</div>';
       });
   }
 
   if (window.BlogTheme) window.BlogTheme.init();
+  if (window.BlogSite) window.BlogSite.init();
   bindEvents();
-  bindScroll();
   load();
 })();

@@ -7,88 +7,132 @@
   <meta name="description" content="一个记录生活、旅行与思考的个人博客。" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="个人博客" />
-  <meta property="og:description" content="一个记录生活、旅行与思考的个人博客。" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦌</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600&family=Raleway:wght@300;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
   <div class="reading-progress"><span id="progressBar"></span></div>
 
-  <header class="nav" id="nav">
-    <div class="nav__inner">
-      <a class="nav__brand" href="#/" data-home>
-        <span class="nav__avatar" id="navAvatar">🦌</span>
-        <span class="nav__name" id="navName">Blog</span>
-      </a>
-      <nav class="nav__links">
-        <a href="#/" data-home>文章</a>
-        <a href="download/">下载</a>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题">
-          <span id="themeIcon">🌙</span>
-        </button>
-      </nav>
+  <!-- ============ 侧边栏 ============ -->
+  <header id="header" class="header">
+    <button class="header-toggle" id="headerToggle" type="button" aria-label="菜单">☰</button>
+
+    <div class="profile-img" id="sideAvatar">🦌</div>
+
+    <a class="logo" href="index.html">
+      <h1 id="sideName">个人博客</h1>
+      <span class="handle" id="sideHandle"></span>
+    </a>
+
+    <div class="social-links" id="sideSocials"></div>
+
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="#hero" class="active"><i class="navicon">🏠</i>首页</a></li>
+        <li><a href="#blog"><i class="navicon">📝</i>文章</a></li>
+        <li><a href="#about"><i class="navicon">👤</i>关于</a></li>
+        <li><a href="download/"><i class="navicon">📦</i>下载</a></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button class="theme-toggle" id="themeToggle" type="button">
+        <span id="themeIcon">🌙</span><span>主题</span>
+      </button>
+      <p class="sidebar-copy" id="sideCopy"></p>
     </div>
   </header>
+  <div class="backdrop" id="backdrop"></div>
 
   <main>
     <!-- ============ 首页 ============ -->
-    <section id="viewHome" class="view">
-      <div class="hero">
-        <div class="hero__blobs" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </div>
-        <div class="hero__content">
-          <span class="hero__badge" id="heroBadge">✨ 正在更新</span>
-          <div class="hero__avatar" id="heroAvatar">🦌</div>
-          <h1 class="hero__title" id="heroName">个人博客</h1>
-          <p class="hero__tagline" id="heroTagline"></p>
-          <p class="hero__bio" id="heroBio"></p>
-          <div class="hero__meta">
-            <span id="heroLocation"></span>
-            <span class="dot">·</span>
-            <span id="heroHandle"></span>
-          </div>
+    <div id="viewHome">
+      <!-- Hero -->
+      <section id="hero" class="hero">
+        <div class="hero__bg" aria-hidden="true"></div>
+        <div class="container">
+          <h2 id="heroName">个人博客</h2>
+          <p>我是 <span class="typed" id="typedText"></span><span class="typed-cursor" aria-hidden="true">|</span></p>
           <div class="hero__socials" id="heroSocials"></div>
-          <div class="hero__stats" id="heroStats"></div>
+          <div class="scroll-hint">SCROLL DOWN ↓</div>
         </div>
-      </div>
+      </section>
 
-      <div class="toolbar">
-        <div class="search">
-          <span class="search__icon">🔍</span>
-          <input id="searchInput" type="search" placeholder="搜索标题、摘要或标签…" autocomplete="off" />
+      <!-- 文章列表 -->
+      <section id="blog" class="section">
+        <div class="container">
+          <div class="section-title">
+            <h2>文章</h2>
+            <p id="blogSubtitle">写代码、改 Bug，以及生活里那些不写下来就会忘掉的小事。</p>
+          </div>
+
+          <div class="toolbar">
+            <div class="search">
+              <span class="search__icon">🔍</span>
+              <input id="searchInput" type="search" placeholder="搜索标题、摘要或标签…" autocomplete="off" />
+            </div>
+            <div class="chips" id="tagChips"></div>
+          </div>
+
+          <div id="featured"></div>
+          <div class="grid" id="postGrid"></div>
+          <div class="empty" id="emptyState" hidden>没有找到匹配的文章，换个关键词试试。</div>
         </div>
-        <div class="chips" id="tagChips"></div>
-      </div>
+      </section>
 
-      <div id="featured"></div>
-      <div class="grid" id="postGrid"></div>
-      <div class="empty" id="emptyState" hidden>没有找到匹配的文章，换个关键词试试 🌿</div>
-    </section>
+      <!-- 关于 -->
+      <section id="about" class="section soft">
+        <div class="container">
+          <div class="section-title">
+            <h2>关于</h2>
+            <p id="aboutTagline"></p>
+          </div>
+          <div class="about-grid">
+            <div class="about">
+              <h3 id="aboutRole">全栈工程师</h3>
+              <p class="lead" id="aboutBio"></p>
+              <ul class="info-list" id="aboutInfo"></ul>
+            </div>
+            <div>
+              <div class="stats" id="aboutStats"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
 
     <!-- ============ 文章详情 ============ -->
-    <article id="viewPost" class="view post" hidden>
-      <a class="back-link" href="#/" data-home>← 返回全部文章</a>
-      <div class="post__cover" id="postCover"><span id="postEmoji"></span></div>
-      <header class="post__head">
-        <div class="post__tags" id="postTags"></div>
-        <h1 class="post__title" id="postTitle"></h1>
-        <div class="post__meta" id="postMeta"></div>
-      </header>
-      <div class="post__body markdown" id="postContent"></div>
-      <footer class="post__foot">
-        <div class="post__tags" id="postTagsBottom"></div>
-        <div class="post__nav" id="postNav"></div>
-      </footer>
-    </article>
+    <section id="viewPost" class="section" hidden>
+      <div class="container post">
+        <a class="back-link" href="#blog">← 返回全部文章</a>
+        <header class="post__head">
+          <div class="post__tags" id="postTags"></div>
+          <h1 class="post__title" id="postTitle"></h1>
+          <div class="post__meta" id="postMeta"></div>
+        </header>
+        <div class="markdown" id="postContent"></div>
+        <footer class="post__foot">
+          <div class="post__tags" id="postTagsBottom"></div>
+          <div class="post__nav" id="postNav"></div>
+        </footer>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
-    <p id="footerText">代码要写，生活也要过 ☕️</p>
-    <p class="footer__copy" id="footerCopy"></p>
+    <div class="container">
+      <p id="footerText"></p>
+      <p class="credits">Designed with ☕️ · Powered by GitHub Pages</p>
+    </div>
   </footer>
 
+  <a href="#" id="scrollTop" class="scroll-top" aria-label="回到顶部">↑</a>
+
   <script src="assets/js/theme.js"></script>
+  <script src="assets/js/site.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>
