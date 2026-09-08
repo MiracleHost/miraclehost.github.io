@@ -9,27 +9,30 @@
   --nav-font: "Poppins", "PingFang SC", "Microsoft YaHei", sans-serif;
 
   --background-color: #ffffff;
-  --default-color: #272829;
+  --default-color: #4a3b42;
   --heading-color: #050d18;
-  --accent-color: #149ddd;
+  --accent-color: #f82249;
   --surface-color: #ffffff;
   --contrast-color: #ffffff;
 
-  --nav-color: #a8a9b4;
+  --nav-color: #cda9c2;
   --nav-hover-color: #ffffff;
-  --nav-dropdown-color: #a8a9b4;
+  --nav-mobile-background-color: #2a1a2e;
+  --nav-dropdown-background-color: #2a1a2e;
+  --nav-dropdown-color: #cda9c2;
+  --nav-dropdown-hover-color: #ffffff;
 }
 
 .light-background {
-  --background-color: #f4fafd;
+  --background-color: #fff0f6;
   --surface-color: #ffffff;
 }
 
 .dark-background {
-  --background-color: #040b14;
+  --background-color: #2a1a2e;
   --default-color: #ffffff;
   --heading-color: #ffffff;
-  --surface-color: #151f2b;
+  --surface-color: #3d2440;
   --contrast-color: #ffffff;
 }
 
@@ -149,7 +152,7 @@ h6 {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(4, 11, 20, .6);
+  background: rgba(42, 26, 46, .6);
   z-index: 996;
 }
 
@@ -392,7 +395,7 @@ section,
 
 .about .about-img {
   border-radius: 12px;
-  background: #f4fafd;
+  background: #fff0f6;
   border: 8px solid #fff;
   box-shadow: 0 8px 26px rgba(5, 13, 24, .08);
 }
@@ -717,7 +720,7 @@ section,
   border-radius: 50%;
   margin: 14px auto 10px;
   border: 4px solid var(--surface-color);
-  background: #f4fafd;
+  background: #fff0f6;
 }
 
 .testimonials .testimonial-item h3 {
@@ -919,13 +922,13 @@ section,
   margin: 22px 0;
   padding: 14px 20px;
   border-left: 3px solid var(--accent-color);
-  background: #f4fafd;
+  background: #fff0f6;
   font-style: italic;
 }
 
 .post-content pre {
-  background: #040b14;
-  color: #e6eef5;
+  background: #2a1a2e;
+  color: #f2e8ee;
   padding: 16px 18px;
   border-radius: 8px;
   overflow-x: auto;
@@ -1045,7 +1048,7 @@ section,
   place-items: center;
   font-size: 26px;
   border-radius: 10px;
-  background: #f4fafd;
+  background: #fff0f6;
 }
 
 .pkg__title {
@@ -1071,7 +1074,7 @@ section,
 
 .pkg .badge--ghost {
   color: color-mix(in srgb, var(--default-color), transparent 35%);
-  background: #f4fafd;
+  background: #fff0f6;
 }
 
 .pkg .badge--new {
@@ -1135,13 +1138,13 @@ section,
 }
 
 .pkg__action .btn--disabled {
-  background: #f4fafd;
+  background: #fff0f6;
   color: color-mix(in srgb, var(--default-color), transparent 45%);
   cursor: not-allowed;
 }
 
 .pkg__action .btn--disabled:hover {
-  background: #f4fafd;
+  background: #fff0f6;
 }
 
 @media (max-width: 991px) {
