@@ -1,6 +1,6 @@
 /**
  * 小鹿 · 个人博客
- * 依赖（均来自公共 CDN）：Bootstrap、AOS、Typed.js、PureCounter、Swiper
+ * 依赖（均来自公共 CDN）：Bootstrap、AOS、PureCounter、Swiper
  */
 (function () {
   'use strict';

@@ -85,7 +85,8 @@ body.download-page {
   display: grid;
   place-items: center;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 20px;
+  line-height: 1;
   color: #fff;
   background: linear-gradient(135deg, #f82249, #ff5f7e);
   box-shadow: 0 6px 16px rgba(248, 34, 73, .35);

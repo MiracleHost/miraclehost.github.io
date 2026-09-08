@@ -63,7 +63,7 @@
     })
     .then(function (data) {
       var page = data.page || {};
-      document.title = (page.title || '下载') + ' · 小鹿 Lu';
+      document.title = page.title || '软件下载';
       $('#pageTitle').textContent = page.title || 'APP Download';
       $('#pageSubtitle').textContent = page.subtitle || '';
       $('#pageNote').textContent = page.note || '';

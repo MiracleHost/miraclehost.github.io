@@ -4,9 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>小鹿 - 程序媛 · 全栈工程师</title>
-  <meta content="程序媛小鹿的个人博客：前端 / 全栈开发笔记、职业成长与生活随笔。" name="description">
-  <meta content="小鹿, 程序媛, 全栈工程师, 前端, 博客, 武汉" name="keywords">
+  <title>小鹿 - Java 开发 · 软件项目经理 · 全栈工程师</title>
+  <meta content="小鹿 Lu 的个人博客：Java 开发、全栈开发与软件项目管理笔记、职业成长与生活随笔。" name="description">
+  <meta content="小鹿, Java开发, 软件项目经理, 全栈开发, 全栈工程师, 项目管理, 博客, 武汉" name="keywords">
 
   <!-- Favicons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -29,40 +29,27 @@
 
 <body class="index-page">
 
-  <!-- 侧边栏 Header -->
-  <header id="header" class="header dark-background d-flex flex-column">
-    <i class="header-toggle d-xl-none bi bi-list" id="headerToggle"></i>
+  <!-- 顶栏 Header -->
+  <header id="header" class="header dark-background">
+    <div class="header-bar">
+      <a href="index.html" class="logo">
+        <span class="logo-mark" aria-hidden="true">🦌</span>
+        <span class="sitename">小鹿 Lu</span>
+      </a>
 
-    <div class="profile-img">
-      <img src="https://api.dicebear.com/9.x/notionists/svg?seed=xiaolu&backgroundColor=b6e3f4" alt="小鹿"
-        class="img-fluid rounded-circle">
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>首页</a></li>
+          <li><a href="#skills"><i class="bi bi-bar-chart navicon"></i>技能</a></li>
+          <li><a href="#portfolio"><i class="bi bi-journal-text navicon"></i>博客文章</a></li>
+          <li><a href="#services"><i class="bi bi-hdd-stack navicon"></i>我能做什么</a></li>
+          <li><a href="#contact"><i class="bi bi-envelope navicon"></i>联系我</a></li>
+          <li><a href="download/"><i class="bi bi-download navicon"></i>软件下载</a></li>
+        </ul>
+      </nav>
+
+      <i class="header-toggle bi bi-list" id="headerToggle" aria-label="打开导航菜单"></i>
     </div>
-
-    <a href="index.html" class="logo d-flex align-items-center justify-content-center">
-      <h1 class="sitename">小鹿 Lu</h1>
-    </a>
-
-    <div class="social-links text-center">
-      <a href="https://github.com/" class="github" target="_blank" rel="noopener"><i class="bi bi-github"></i></a>
-      <a href="https://juejin.cn/" class="juejin" target="_blank" rel="noopener"><i class="bi bi-code-slash"></i></a>
-      <a href="https://www.xiaohongshu.com/" class="xiaohongshu" target="_blank" rel="noopener"><i
-          class="bi bi-heart"></i></a>
-      <a href="mailto:hello@example.com" class="email"><i class="bi bi-envelope"></i></a>
-    </div>
-
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>首页</a></li>
-        <li><a href="#about"><i class="bi bi-person navicon"></i> 关于我</a></li>
-        <li><a href="#skills"><i class="bi bi-bar-chart navicon"></i> 技能</a></li>
-        <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i> 经历</a></li>
-        <li><a href="#portfolio"><i class="bi bi-journal-text navicon"></i> 博客文章</a></li>
-        <li><a href="#services"><i class="bi bi-hdd-stack navicon"></i> 我能做什么</a></li>
-        <li><a href="#testimonials"><i class="bi bi-chat-quote navicon"></i> 大家说</a></li>
-        <li><a href="#contact"><i class="bi bi-envelope navicon"></i> 联系我</a></li>
-        <li><a href="download/"><i class="bi bi-download navicon"></i> 软件下载</a></li>
-      </ul>
-    </nav>
   </header>
   <div class="backdrop" id="backdrop"></div>
 
@@ -70,12 +57,12 @@
 
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
-      <img src="https://picsum.photos/seed/xiaolu-code-hero/1920/1080" alt="" data-aos="fade-in">
+      <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1920&q=80" alt=""
+        data-aos="fade-in">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <h2>小鹿</h2>
-        <p>我是 <span class="typed" data-typed-items="全栈工程师, 前端开发, 技术写作者, 养猫专业户">全栈工程师</span><span
-            class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
+        <h2>Java 开发 · 软件项目经理 · 全栈开发</h2>
+        <p>十年软件研发与项目管理经验，专注 Java 服务端与全栈交付，也把踩过的坑写成文章。</p>
         <div class="hero-social">
           <a href="https://github.com/" target="_blank" rel="noopener"><i class="bi bi-github"></i></a>
           <a href="https://juejin.cn/" target="_blank" rel="noopener"><i class="bi bi-code-slash"></i></a>
@@ -83,52 +70,6 @@
         </div>
       </div>
     </section><!-- /Hero Section -->
-
-    <!-- About Section -->
-    <section id="about" class="about section">
-      <div class="container section-title" data-aos="fade-up">
-        <h2>关于我</h2>
-        <p>写代码第十年，依然会因为一个 Bug 被解决而开心一整天。</p>
-      </div>
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4 justify-content-center">
-          <div class="col-lg-4">
-            <img src="https://api.dicebear.com/9.x/notionists/svg?seed=xiaolu-about&backgroundColor=b6e3f4"
-              class="img-fluid about-img" alt="">
-          </div>
-          <div class="col-lg-8 content">
-            <h2>全栈工程师 · 前端 / Node.js</h2>
-            <p class="fst-italic py-3">
-              十年一线开发经验，做过电商、SaaS、工具类产品，从 jQuery 时代一路写到今天的 Vue / React + TypeScript。
-              喜欢把复杂的东西拆成简单的模块，也喜欢把踩过的坑写下来。
-            </p>
-            <div class="row">
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>生日：</strong> <span>5 月 21 日</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>网站：</strong> <span>lu.example.com</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>电话：</strong> <span>+86 138 0000 0000</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>城市：</strong> <span>中国 · 武汉</span></li>
-                </ul>
-              </div>
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>年限：</strong> <span>10 年</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>学历：</strong> <span>计算机科学与技术 · 本科</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>邮箱：</strong> <span>hello@example.com</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>接单状态：</strong> <span>可接远程项目</span></li>
-                </ul>
-              </div>
-            </div>
-            <p class="py-3">
-              工作之外，我养了一只叫 Promise 的猫，它大部分时间处于 pending 状态。这个博客记录我的技术笔记、踩坑现场，
-              以及一些不写下来就会忘掉的小事。
-            </p>
-          </div>
-        </div>
-      </div>
-    </section><!-- /About Section -->
 
     <!-- Stats Section -->
     <section id="stats" class="stats section">
@@ -229,71 +170,6 @@
       </div>
     </section><!-- /Skills Section -->
 
-    <!-- Resume Section -->
-    <section id="resume" class="resume section">
-      <div class="container section-title" data-aos="fade-up">
-        <h2>经历</h2>
-        <p>从写第一个页面，到带一支小团队。</p>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="resume-title">简介</h3>
-            <div class="resume-item pb-0">
-              <h4>小鹿</h4>
-              <p><em>十年经验的全栈工程师，擅长把复杂的业务拆成可维护的模块，也擅长把一堆看不懂的报错读明白。</em></p>
-              <ul>
-                <li>武汉 · 中国</li>
-                <li>+86 138 0000 0000</li>
-                <li>hello@example.com</li>
-              </ul>
-            </div>
-
-            <h3 class="resume-title">教育</h3>
-            <div class="resume-item">
-              <h4>计算机科学与技术 · 本科</h4>
-              <h5>2012 - 2016</h5>
-              <p><em>武汉大学</em></p>
-              <p>在校期间做过校园二手交易网站，第一次体会到「有人真的在用你写的东西」这件事有多上瘾。</p>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-            <h3 class="resume-title">工作经历</h3>
-            <div class="resume-item">
-              <h4>高级全栈工程师 / 前端负责人</h4>
-              <h5>2021 - 至今</h5>
-              <p><em>某 SaaS 公司，武汉</em></p>
-              <ul>
-                <li>主导订单中心前端重构，把 3000 行的巨型组件拆分为 6 个模块，需求平均改动量下降 70%。</li>
-                <li>搭建团队组件库与 CI 流水线，发布耗时从 40 分钟降到 8 分钟。</li>
-                <li>负责前端规范与 Code Review，带 4 位 junior 同学成长。</li>
-              </ul>
-            </div>
-            <div class="resume-item">
-              <h4>全栈工程师</h4>
-              <h5>2018 - 2021</h5>
-              <p><em>某电商平台，武汉</em></p>
-              <ul>
-                <li>负责营销活动页与后台管理系统，支撑过三次大促（峰值 QPS 1.2w）。</li>
-                <li>用 Node.js 重写活动配置服务，运营配置上线时间从 2 小时缩短到 10 分钟。</li>
-              </ul>
-            </div>
-            <div class="resume-item">
-              <h4>前端工程师</h4>
-              <h5>2016 - 2018</h5>
-              <p><em>某创业公司，武汉</em></p>
-              <ul>
-                <li>从 0 参与 Web 与小程序开发，一个人扛过三个产品的前端。</li>
-                <li>第一次写单元测试，也第一次因为删掉 2000 行代码被表扬。</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section><!-- /Resume Section -->
-
     <!-- Portfolio / Blog Section -->
     <section id="portfolio" class="portfolio section light-background">
       <div class="container section-title" data-aos="fade-up">
@@ -369,85 +245,11 @@
       </div>
     </section><!-- /Services Section -->
 
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials section light-background">
-      <div class="container section-title" data-aos="fade-up">
-        <h2>大家说</h2>
-        <p>来自同事、合作方和读者的反馈。</p>
-      </div>
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="swiper init-swiper">
-          <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": { "delay": 5000 },
-              "slidesPerView": "auto",
-              "pagination": { "el": ".swiper-pagination", "type": "bullets", "clickable": true },
-              "breakpoints": { "320": { "slidesPerView": 1, "spaceBetween": 40 }, "1200": { "slidesPerView": 3, "spaceBetween": 20 } }
-            }
-          </script>
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>那次线上白屏，小鹿十分钟就定位到了 Safari 的排序兼容问题。她最厉害的地方不是写得快，而是够冷静。</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=teammate-1" class="testimonial-img" alt="">
-                <h3>陈工</h3>
-                <h4>后端同事</h4>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>订单中心重构那次，她先花一周补测试再动手。上线零回滚，是我合作过最让人放心的前端。</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=teammate-2" class="testimonial-img" alt="">
-                <h3>Lisa</h3>
-                <h4>产品经理</h4>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>我是看她的博客入门的前端，写得很真诚，连踩坑的过程都写下来，比看官方文档有用。</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=reader-1" class="testimonial-img" alt="">
-                <h3>小舟</h3>
-                <h4>读者 / 应届生</h4>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>远程协作两年，她从没让沟通成为问题。每天一句「我先下了」，比任何流程都有效。</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-                <img src="https://api.dicebear.com/9.x/notionists/svg?seed=teammate-3" class="testimonial-img" alt="">
-                <h3>老王</h3>
-                <h4>项目负责人</h4>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
-      </div>
-    </section><!-- /Testimonials Section -->
-
     <!-- Contact Section -->
     <section id="contact" class="contact section">
       <div class="container section-title" data-aos="fade-up">
         <h2>联系我</h2>
-        <p>工作合作、技术交流，或者只是想聊聊猫，都可以找我。</p>
+        <p>工作合作、技术交流、项目管理经验分享，都欢迎找我。</p>
       </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -551,7 +353,6 @@
   <!-- Vendor JS Files（公共 CDN） -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs@1.5.0/dist/purecounter_vanilla.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.js"></script>
 

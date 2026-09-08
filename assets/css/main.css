@@ -86,12 +86,19 @@ h6 {
   border-right: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
 }
 
-.header .profile-img img {
+.header .profile-img .profile-emoji {
   margin: 15px auto;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 120px;
+  height: 120px;
   border: 8px solid color-mix(in srgb, var(--default-color), transparent 85%);
-  background: #fff;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #ffe1ea, #d9a8cf);
+  font-size: 60px;
+  line-height: 1;
+  user-select: none;
 }
 
 .header .logo {
@@ -1161,4 +1168,170 @@ section,
     width: 100%;
     justify-content: center;
   }
+}
+
+/*--------------------------------------------------------------
+# 顶栏布局覆盖（首页：菜单不再放左侧）
+--------------------------------------------------------------*/
+.header {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  width: 100%;
+  height: 72px;
+  padding: 0;
+  overflow: visible;
+  box-shadow: none;
+  border-right: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.header-bar {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.header .logo {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.header .logo-mark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 21px;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent-color), #ff5f7e);
+}
+
+.header .logo .sitename {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+  font-family: var(--heading-font);
+  color: #fff;
+}
+
+/* 桌面端：横向菜单 */
+@media (min-width: 1200px) {
+
+  .header~main,
+  .header~#footer {
+    margin-left: 0;
+  }
+
+  .header .navmenu ul {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    gap: 2px;
+  }
+
+  .header .navmenu a,
+  .header .navmenu a:focus {
+    width: auto;
+    padding: 8px 13px;
+    color: rgba(255, 255, 255, .8);
+    border-radius: 8px;
+  }
+
+  .header .navmenu a .navicon {
+    font-size: 16px;
+    margin-right: 6px;
+  }
+
+  .header .navmenu a:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, .12);
+  }
+
+  .header .navmenu .active,
+  .header .navmenu .active:focus {
+    color: #fff;
+    background: var(--accent-color);
+  }
+
+  .header .header-toggle {
+    display: none;
+  }
+}
+
+/* 移动端：汉堡按钮 + 下拉菜单 */
+@media (max-width: 1199px) {
+
+  .header .header-toggle {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    font-size: 22px;
+    color: #fff;
+    background: rgba(255, 255, 255, .1);
+    cursor: pointer;
+    margin-left: auto;
+  }
+
+  .header .navmenu {
+    display: none;
+    position: fixed;
+    top: 72px;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+    padding: 10px 14px 16px;
+    background: #2a1a2e;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, .35);
+    border-top: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  .header.header-show .navmenu {
+    display: block;
+  }
+
+  .header .navmenu ul {
+    display: block;
+    padding: 0;
+    margin: 0;
+  }
+
+  .header .navmenu a,
+  .header .navmenu a:focus {
+    width: 100%;
+    padding: 12px 14px;
+    color: var(--nav-color);
+  }
+
+  .header .navmenu a .navicon {
+    margin-right: 10px;
+  }
+
+  .header .navmenu a:hover,
+  .header .navmenu .active,
+  .header .navmenu .active:focus {
+    color: #fff;
+    background: rgba(255, 255, 255, .1);
+  }
+}
+
+/* 锚点滚动避开固定顶栏 */
+main section[id] {
+  scroll-margin-top: 80px;
 }
