@@ -277,7 +277,7 @@
       }
       error.style.display = 'none';
       var body = encodeURIComponent(message + '\n\n— ' + name + '（' + email + '）');
-      window.location.href = 'mailto:hello@example.com?subject=' +
+      window.location.href = 'mailto:miracle.qi@foxmail.com?subject=' +
         encodeURIComponent('[博客留言] ' + subject) + '&body=' + body;
       sent.style.display = 'block';
       form.reset();
