@@ -443,7 +443,17 @@ section,
 # Skills Section
 --------------------------------------------------------------*/
 .skills .progress {
+  display: block;
+  height: auto;
+  overflow: visible;
+  background: transparent;
+  border-radius: 0;
   margin-bottom: 26px;
+}
+
+.skills .progress .progress-bar-wrap {
+  display: block;
+  width: 100%;
 }
 
 .skills .progress .skill {
